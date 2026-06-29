@@ -1,0 +1,63 @@
+name: CD Pipeline (Deploy to Production)
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-and-push-backend:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Log in to the Container registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Build and push backend image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./backend
+          push: true
+          tags: ghcr.io/${{ github.repository }}/backend:latest
+
+  # Example deployment step for a generic VPS / Render
+  deploy-backend:
+    needs: build-and-push-backend
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deploy Hook
+        # Replace with your actual deploy hook URL in GitHub Secrets
+        run: curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK }}
+        # Or if deploying to a VPS via SSH:
+        # - name: Deploy via SSH
+        #   uses: appleboy/ssh-action@master
+        #   with:
+        #     host: ${{ secrets.SERVER_HOST }}
+        #     username: ${{ secrets.SERVER_USER }}
+        #     key: ${{ secrets.SERVER_SSH_KEY }}
+        #     script: |
+        #       cd /app
+        #       docker-compose pull backend
+        #       docker-compose up -d --no-deps backend
+        #       docker exec backend alembic upgrade head
+
+  # Example deployment for Frontend (Vercel)
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Pull Vercel Environment Information
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build Project Artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Deploy Project Artifacts to Vercel
+        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
