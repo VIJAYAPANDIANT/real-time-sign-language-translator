@@ -9,9 +9,7 @@ import contextlib
 
 @contextlib.asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Initialize DB (in production use Alembic)
-    async with engine.begin() as conn:
-        await conn.run_sync(Base.metadata.create_all)
+    # Database is managed via Alembic migrations now
     yield
     # Shutdown
     pass

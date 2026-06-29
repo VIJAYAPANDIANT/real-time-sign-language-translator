@@ -1,35 +1,15 @@
-version: "3.8"
-
+version: '3.8'
 services:
-  frontend:
-    build: ./frontend
-    ports:
-      - "5173:5173"
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
+  db:
+    image: postgres:15
     environment:
-      - VITE_API_URL=http://localhost:8000
-    depends_on:
-      - backend
-
-  backend:
-    build: ./backend
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: asldb
     ports:
-      - "8000:8000"
+      - "5432:5432"
     volumes:
-      - ./backend:/app
-    environment:
-      - DATABASE_URL=postgresql://user:password@db:5432/signlang_db
-      - JWT_SECRET=supersecretjwtkey
-      - MODEL_PATH=./ml/models/sequence_classifier.h5
+      - pgdata:/var/lib/postgresql/data
 
-  # Uncomment below for db when ready
-  # db:
-  #   image: postgres:15
-  #   environment:
-  #     - POSTGRES_USER=user
-  #     - POSTGRES_PASSWORD=password
-  #     - POSTGRES_DB=signlang_db
-  #   ports:
-  #     - "5432:5432"
+volumes:
+  pgdata:
