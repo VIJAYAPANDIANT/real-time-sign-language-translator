@@ -20,17 +20,17 @@ describe('TranslationPanel Component', () => {
 
   it('renders predictions correctly and shows the latest confidence', () => {
     const mockPredictions: Prediction[] = [
-      { text: 'Hello', confidence: 0.95 },
-      { text: 'World', confidence: 0.82 }
+      { text: 'HELLO', gloss: 'HELLO', confidence: 0.95 },
+      { text: 'THANK YOU', gloss: 'THANK YOU', confidence: 0.88 },
     ];
 
     render(<TranslationPanel predictions={mockPredictions} isConnected={true} isTranslating={true} />);
     
     // Check if the joined text is rendered
-    expect(screen.getByText('Hello World')).toBeInTheDocument();
+    expect(screen.getByText('HELLO THANK YOU')).toBeInTheDocument();
     
     // Check if the confidence badge shows the latest prediction's confidence
-    expect(screen.getByText('82% Match')).toBeInTheDocument();
+    expect(screen.getByText('88% Match')).toBeInTheDocument();
   });
 
   it('triggers speechSynthesis when the speak button is clicked', () => {
@@ -49,7 +49,7 @@ describe('TranslationPanel Component', () => {
       writable: true
     });
 
-    const mockPredictions: Prediction[] = [{ text: 'Hello', confidence: 0.99 }];
+    const mockPredictions: Prediction[] = [{ text: 'Hello', gloss: 'Hello', confidence: 0.99 }];
 
     render(<TranslationPanel predictions={mockPredictions} isConnected={true} isTranslating={true} />);
     

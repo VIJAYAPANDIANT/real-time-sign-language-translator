@@ -97,6 +97,12 @@ export function useTranslatorSocket() {
     };
   }, [disconnect]);
 
+  const sendFrame = useCallback((frameData: string) => {
+    if (socketRef.current?.readyState === WebSocket.OPEN) {
+      socketRef.current.send(JSON.stringify({ frame: frameData }));
+    }
+  }, []);
+
   return {
     isConnected,
     isTranslating,
@@ -106,6 +112,7 @@ export function useTranslatorSocket() {
     startTranslating,
     stopTranslating,
     clearTranslations,
+    sendFrame,
     socket: socketRef.current,
   };
 }

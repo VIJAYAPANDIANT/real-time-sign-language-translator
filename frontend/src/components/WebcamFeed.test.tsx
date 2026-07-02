@@ -22,7 +22,7 @@ describe('WebcamFeed Component', () => {
       stream: null,
       startCamera: mockStartCamera,
       stopCamera: mockStopCamera,
-      error: null,
+      devices: [],
     });
 
     render(<WebcamFeed isActive={false} onVideoReady={mockOnVideoReady} />);
@@ -36,7 +36,7 @@ describe('WebcamFeed Component', () => {
       stream: null,
       startCamera: mockStartCamera,
       stopCamera: mockStopCamera,
-      error: null,
+      devices: [],
     });
 
     render(<WebcamFeed isActive={true} onVideoReady={mockOnVideoReady} />);
@@ -53,7 +53,7 @@ describe('WebcamFeed Component', () => {
       stream: dummyStream,
       startCamera: mockStartCamera,
       stopCamera: mockStopCamera,
-      error: null,
+      devices: [],
     });
 
     const { container } = render(<WebcamFeed isActive={true} onVideoReady={mockOnVideoReady} />);

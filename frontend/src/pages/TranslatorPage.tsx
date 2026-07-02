@@ -4,6 +4,7 @@ import { LandmarkOverlay } from '../components/LandmarkOverlay';
 import { TranslationPanel } from '../components/TranslationPanel';
 import { ReverseTranslator } from '../components/ReverseTranslator';
 import { useTranslatorSocket } from '../hooks/useTranslatorSocket';
+import { useFrameSender } from '../hooks/useFrameSender';
 import { Play, Square, Trash2, ArrowLeftRight } from 'lucide-react';
 import './TranslatorPage.css';
 
@@ -20,7 +21,11 @@ export function TranslatorPage() {
     startTranslating,
     stopTranslating,
     clearTranslations,
+    sendFrame,
   } = useTranslatorSocket();
+
+  // Send frames to backend via websocket when translating
+  useFrameSender(videoRef, isTranslating, sendFrame, 10);
 
   const handleToggleTranslation = () => {
     if (isTranslating) {
