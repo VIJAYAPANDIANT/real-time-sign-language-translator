@@ -28,8 +28,9 @@ export function useWebcam(videoRef: React.RefObject<HTMLVideoElement>) {
     }
 
     try {
-      if (stream) {
-        stream.getTracks().forEach(track => track.stop());
+      if (videoRef.current && videoRef.current.srcObject) {
+        const oldStream = videoRef.current.srcObject as MediaStream;
+        oldStream.getTracks().forEach(track => track.stop());
       }
 
       const newStream = await navigator.mediaDevices.getUserMedia({
@@ -46,17 +47,16 @@ export function useWebcam(videoRef: React.RefObject<HTMLVideoElement>) {
       console.error('Error accessing camera', err);
       addToast('Camera access denied or unavailable.', 'error');
     }
-  }, [settings.deviceId, videoRef, addToast, getDevices, stream]); // Note: stream in deps could cause loops if not careful, but fine for simple cases
+  }, [settings.deviceId, videoRef, addToast, getDevices]);
 
   const stopCamera = useCallback(() => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
-    }
-    if (videoRef.current) {
+    if (videoRef.current && videoRef.current.srcObject) {
+      const oldStream = videoRef.current.srcObject as MediaStream;
+      oldStream.getTracks().forEach(track => track.stop());
       videoRef.current.srcObject = null;
     }
-  }, [stream, videoRef]);
+    setStream(null);
+  }, [videoRef]);
 
   // Clean up on unmount
   useEffect(() => {
