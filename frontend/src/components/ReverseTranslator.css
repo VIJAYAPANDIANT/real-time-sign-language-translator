@@ -1,0 +1,113 @@
+.reverse-translator-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  gap: 1.5rem;
+}
+
+.player-section {
+  flex: 1;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+}
+
+.input-section {
+  padding: 1.5rem;
+}
+
+.input-form {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input-wrapper {
+  position: relative;
+  flex: 1;
+  display: flex;
+  align-items: center;
+}
+
+.text-input {
+  width: 100%;
+  padding: 1rem 3.5rem 1rem 1.5rem;
+  font-size: 1.125rem;
+  border-radius: 1rem;
+  border: 2px solid var(--color-border);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.text-input:focus {
+  border-color: var(--color-primary-base);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+}
+
+.mic-btn {
+  position: absolute;
+  right: 0.5rem;
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  color: var(--color-text-secondary);
+  background: transparent;
+  transition: all 0.2s ease;
+}
+
+.mic-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+  color: var(--color-primary-base);
+}
+
+.mic-btn.listening {
+  color: #ef4444; /* Red to indicate recording */
+  animation: pulse-red 2s infinite;
+}
+
+@keyframes pulse-red {
+  0% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(239, 68, 68, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+  }
+}
+
+.submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 2rem;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: white;
+  background: linear-gradient(135deg, var(--color-primary-base), var(--color-secondary-base));
+  border-radius: 1rem;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  .mic-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+  }
+}

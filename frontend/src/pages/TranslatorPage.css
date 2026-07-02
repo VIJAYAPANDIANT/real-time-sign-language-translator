@@ -21,42 +21,78 @@
   gap: 1rem;
 }
 
-.btn-stop {
-  background: var(--color-accent-base);
-  color: white;
-}
-
-.btn-stop:hover {
-  background: #be185d;
-  color: white;
-}
-
 .translator-workspace {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: stretch;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.5rem;
+  height: 600px;
+}
+
+.translator-workspace-reverse {
+  height: 600px;
+  width: 100%;
 }
 
 .video-container {
   position: relative;
-  background-color: #000;
-  border-radius: 1.5rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 1rem;
   overflow: hidden;
-  box-shadow: var(--shadow-lg);
-  border: 1px solid var(--color-border);
-  aspect-video: 16 / 9;
-  display: flex;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .video-container.active {
-  border-color: var(--color-primary-base);
-  box-shadow: var(--shadow-glow);
+  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3), 0 4px 6px -2px rgba(99, 102, 241, 0.15);
 }
 
+.btn-stop {
+  background: #ef4444;
+  color: white;
+}
+
+.btn-stop:hover {
+  background: #dc2626;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.mode-toggle-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  background: var(--color-bg-glass);
+  border: 1px solid var(--color-border);
+  border-radius: 2rem;
+  color: var(--color-text-primary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.mode-toggle-btn:hover {
+  background: var(--color-bg-secondary);
+  border-color: var(--color-primary-base);
+  color: var(--color-primary-base);
+  transform: translateY(-1px);
+}
+
+/* Responsive */
 @media (max-width: 1024px) {
   .translator-workspace {
     grid-template-columns: 1fr;
+    height: auto;
+  }
+  
+  .translator-workspace-reverse {
+    height: auto;
+    min-height: 600px;
+  }
+
+  .video-container {
+    aspect-ratio: 4/3;
   }
 }
 
@@ -64,6 +100,14 @@
   .translator-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 1rem;
+  }
+  
+  .translator-actions {
+    width: 100%;
+  }
+  
+  .translator-actions .btn {
+    flex: 1;
+    justify-content: center;
   }
 }
