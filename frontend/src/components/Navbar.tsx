@@ -1,45 +1,75 @@
-import { NavLink } from 'react-router-dom';
-import { Camera, History, Settings, Home } from 'lucide-react';
-import { ThemeToggle } from './ThemeToggle';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
+import { Settings, History, Video, LogOut, LogIn, UserPlus } from 'lucide-react';
 import './Navbar.css';
 
 export function Navbar() {
-  const navItems = [
-    { to: '/', icon: Home, label: 'Home' },
-    { to: '/translate', icon: Camera, label: 'Translate' },
-    { to: '/history', icon: History, label: 'History' },
-    { to: '/settings', icon: Settings, label: 'Settings' },
-  ];
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { isAuthenticated, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+    navigate('/');
+  };
 
   return (
-    <nav className="navbar animate-fade-in">
-      <div className="glass-panel navbar-inner">
-        <div className="flex-center">
-          <span className="navbar-logo text-gradient">
-            SignLang AI
-          </span>
-        </div>
-        
+    <nav className="navbar glass-panel">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-brand">
+          <div className="navbar-logo">
+            <span className="logo-text">Sign</span>
+            <span className="logo-dot"></span>
+          </div>
+        </Link>
+
         <div className="navbar-links">
-          {navItems.map((item) => {
-            const Icon = item.icon;
-            return (
-              <NavLink
-                key={item.to}
-                to={item.to}
-                aria-label={item.label}
-                title={item.label}
-                className={({ isActive }) =>
-                  `nav-link ${isActive ? 'active' : ''}`
-                }
+          {isAuthenticated ? (
+            <>
+              <Link 
+                to="/translate" 
+                className={`nav-link ${location.pathname === '/translate' ? 'active' : ''}`}
               >
-                <Icon size={18} />
-                <span className="nav-link-text">{item.label}</span>
-              </NavLink>
-            );
-          })}
-          <div className="navbar-divider"></div>
-          <ThemeToggle />
+                <Video size={18} />
+                <span>Studio</span>
+              </Link>
+              <Link 
+                to="/history" 
+                className={`nav-link ${location.pathname === '/history' ? 'active' : ''}`}
+              >
+                <History size={18} />
+                <span>History</span>
+              </Link>
+              <Link 
+                to="/settings" 
+                className={`nav-link ${location.pathname === '/settings' ? 'active' : ''}`}
+              >
+                <Settings size={18} />
+                <span>Settings</span>
+              </Link>
+              <button onClick={handleLogout} className="nav-link btn-logout">
+                <LogOut size={18} />
+                <span>Logout</span>
+              </button>
+            </>
+          ) : (
+            <>
+              <Link 
+                to="/login" 
+                className="btn btn-outline"
+              >
+                <LogIn size={18} />
+                <span>Sign In</span>
+              </Link>
+              <Link 
+                to="/signup" 
+                className="btn btn-primary"
+              >
+                <UserPlus size={18} />
+                <span>Sign Up</span>
+              </Link>
+            </>
+          )}
         </div>
       </div>
     </nav>
