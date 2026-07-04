@@ -18,7 +18,7 @@ export function Navbar() {
       <div className="navbar-container">
         <Link to="/" className="navbar-brand">
           <div className="navbar-logo">
-            <span className="logo-text">Sign</span>
+            <span className="logo-text">SignLang AI</span>
             <span className="logo-dot"></span>
           </div>
         </Link>
