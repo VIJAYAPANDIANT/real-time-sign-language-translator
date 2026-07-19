@@ -1,39 +1,75 @@
-# Real-Time Sign Language Translator
+# SignLang AI - Real-Time Sign Language Translator
 
-A full-stack web application that allows users to perform ASL signs through their webcam and see real-time translated text.
+SignLang AI is a full-stack, real-time American Sign Language (ASL) translator. The web application allows users to capture sign language gestures using their webcam, translates the movements into text via a high-performance backend, and displays translation history and profiles for authenticated users.
 
-## Architecture
+## ✨ Features
 
-- **Frontend**: React + TypeScript (Vite), TailwindCSS
-- **Backend**: Python FastAPI
-- **Real-time transport**: WebSocket (frontend streams webcam frames/landmarks, backend streams back predictions)
-- **Computer vision**: MediaPipe Hands + Pose for landmark extraction
-- **ML model**: sequence classifier (LSTM/Transformer) trained on landmark sequences
-- **Database**: PostgreSQL
-- **Containerization**: Docker + docker-compose
+- **Real-Time translation:** Streams webcam frames or landmarks over WebSockets to an inference backend (using MediaPipe) for instant sign-to-text translation.
+- **Secure Authentication Flow:** 
+  - Complete user registration (with username, email, and password) and sign-in pages.
+  - Session persistence using JWT tokens stored securely in the client's local storage.
+  - Protected routes (`/translate`, `/history`, and `/settings`) to prevent unauthorized access.
+- **Glassmorphic Responsive UI:** A premium, responsive user interface styled with custom CSS, featuring:
+  - Dynamic navigation header that adapts to login state.
+  - Mobile-friendly navbar layout.
+- **Translation History & Settings:** Access past translation sessions, user preferences, and profile configurations.
 
-## Folder Structure
+## 🛠️ Architecture & Tech Stack
 
-- `/frontend`: React app.
-- `/backend`: FastAPI app.
-- `/ml`: Training pipeline, model artifacts, notebooks.
+- **Frontend:** React (TypeScript) + Vite, Custom Vanilla CSS, Lucide React Icons.
+- **Backend:** Python FastAPI, SQLAlchemy (ORM), WebSockets for real-time frame transmission.
+- **Real-Time CV Pipeline:** MediaPipe Hands + Pose for landmark extraction and LSTM/Transformer model in backend for gesture sequence predictions.
+- **Database:** SQLite (local development) / PostgreSQL.
+- **Deployment & Containerization:** Docker, Docker Compose, Vercel (for frontend).
 
-## Running Locally
+## 📁 Folder Structure
 
-To run the full stack locally:
+- `/frontend`: Vite-powered React application.
+- `/backend`: FastAPI application containing auth routes, session management, and WebSocket endpoints.
+- `/ml`: Machine learning training pipeline, landmark extraction models, and trained weights.
 
-1. Ensure Docker and docker-compose are installed on your machine.
-2. Clone this repository.
-3. Run the following command in the root of the project:
+## 🚀 Running Locally
 
-```bash
-docker-compose up --build
-```
+### Prerequisites
+- Docker & Docker Compose installed.
+- Node.js (v18+) and Python 3.10+ (if running manually without Docker).
 
-4. Once the containers are running:
-   - Frontend is accessible at `http://localhost:5173`
-   - Backend API is accessible at `http://localhost:8000/api/health`
+### Option A: Using Docker (Recommended)
+1. Clone this repository.
+2. Build and run the services from the root folder:
+   ```bash
+   docker-compose up --build
+   ```
+3. Open `http://localhost:5173` in your browser.
 
-## Environment Variables
+### Option B: Manual Setup
 
-Copy the `.env.example` files to `.env` in both `/frontend` and `/backend` and update the values as needed.
+#### Backend
+1. Navigate to `/backend`.
+2. Create a virtual environment and install dependencies:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: .\venv\Scripts\activate
+   pip install -r requirements.txt
+   ```
+3. Run the development server:
+   ```bash
+   uvicorn app.main:app --reload
+   ```
+
+#### Frontend
+1. Navigate to `/frontend`.
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+
+## 🔐 Environment Variables
+
+- **Frontend:** Rename `/frontend/.env.example` to `/frontend/.env` and update API endpoints.
+- **Backend:** Rename `/backend/.env.example` to `/backend/.env` and set your `SECRET_KEY` and database configuration.
+
